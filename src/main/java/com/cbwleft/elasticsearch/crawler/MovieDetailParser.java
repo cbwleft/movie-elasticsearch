@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,7 +32,11 @@ public class MovieDetailParser {
         movie.setTitle(title);
         String score = document.select("strong.rank").text();
         log.debug("评分:{}", score);
-        movie.setScore(Float.parseFloat(score));
+        try {
+            movie.setScore(Float.parseFloat(score));
+        } catch (NumberFormatException e) {
+            log.info(e.getMessage());
+        }
         String updateDate = document.select("span.updatetime").text();
         log.debug("发布日期:{}", updateDate);
         try {
@@ -49,38 +52,44 @@ public class MovieDetailParser {
         movie.setActor(actor);
         zoom.select("p").forEach(p -> {
             String text = p.text();
-            if (text.startsWith("◎译　　名")) {
-                log.debug("译名:{}", text);
-                movie.setTranslatedName(Arrays.asList(text.substring(6).split("/")));
-            } else if (text.startsWith("◎片　　名")) {
-                log.debug("片名:{}", text);
-                movie.setName(text.substring(6));
-            } else if (text.startsWith("◎年　　代")) {
-                log.debug("年代:{}", text);
-                movie.setYear(Integer.parseInt(text.substring(6)));
-            } else if (text.startsWith("◎产　　地")) {
-                log.debug("产地:{}", text);
-                movie.setOrigin(text.substring(6));
-            } else if (text.startsWith("◎类　　别")) {
-                log.debug("类别:{}", text);
-                movie.setCategory(Arrays.asList(text.substring(6).split("/")));
-            } else if (text.startsWith("◎片　　长")) {
-                log.debug("片长:{}", text);
-                movie.setDuration(Integer.parseInt(text.substring(6).split("\\s+")[0]));
-            } else if (text.startsWith("◎导　　演")) {
-                log.debug("导演:{}", text);
-                movie.setDirector(text.substring(6));
-            } else if (text.startsWith("◎上映日期")) {
-                log.debug("上映日期:{}", text);
-                movie.setReleaseDate(text.substring(6));
-            } else if (text.startsWith("◎主　　演") || text.startsWith("　　　　　")) {
-                log.debug("主演:{}", text);
-                actor.add(text.substring(6));
-            } else if (text.startsWith("◎简　　介")) {
-                String description = p.nextElementSibling().text();
-                log.debug("简介:{}", description);
-                movie.setDescription(description.substring(2));
+            try {
+                if (text.startsWith("◎译　　名")) {
+                    log.debug("译名:{}", text);
+                    movie.setTranslatedName(Arrays.asList(text.substring(6).split("/")));
+                } else if (text.startsWith("◎片　　名")) {
+                    log.debug("片名:{}", text);
+                    movie.setName(text.substring(6));
+                } else if (text.startsWith("◎年　　代")) {
+                    log.debug("年代:{}", text);
+                    movie.setYear(Integer.parseInt(text.substring(6)));
+                } else if (text.startsWith("◎产　　地")) {
+                    log.debug("产地:{}", text);
+                    movie.setOrigin(text.substring(6));
+                } else if (text.startsWith("◎类　　别")) {
+                    log.debug("类别:{}", text);
+                    movie.setCategory(Arrays.asList(text.substring(6).split("/")));
+                } else if (text.startsWith("◎片　　长")) {
+                    log.debug("片长:{}", text);
+                    movie.setDuration(Integer.parseInt(text.substring(6)
+                            .replace("分钟", "").replace("Mins", "").trim()));
+                } else if (text.startsWith("◎导　　演")) {
+                    log.debug("导演:{}", text);
+                    movie.setDirector(text.substring(6));
+                } else if (text.startsWith("◎上映日期")) {
+                    log.debug("上映日期:{}", text);
+                    movie.setReleaseDate(text.substring(6));
+                } else if (text.startsWith("◎主　　演") || text.startsWith("　　　　　")) {
+                    log.debug("主演:{}", text);
+                    actor.add(text.substring(6));
+                } else if (text.startsWith("◎简　　介")) {
+                    String description = p.nextElementSibling().text();
+                    log.debug("简介:{}", description);
+                    movie.setDescription(description.substring(2));
+                }
+            } catch (RuntimeException e) {
+                log.info(e.getMessage());
             }
+
         });
         List<String> downloadUrl = new ArrayList<>();
         movie.setDownloadUrl(downloadUrl);
