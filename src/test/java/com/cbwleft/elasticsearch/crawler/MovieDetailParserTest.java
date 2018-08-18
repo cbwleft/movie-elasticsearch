@@ -1,4 +1,4 @@
-package com.cbwleft.elasticsearch.jsoup;
+package com.cbwleft.elasticsearch.crawler;
 
 import com.cbwleft.elasticsearch.entity.Movie;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-
-import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)

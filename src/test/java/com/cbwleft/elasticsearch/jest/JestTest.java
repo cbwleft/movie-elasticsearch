@@ -1,8 +1,7 @@
 package com.cbwleft.elasticsearch.jest;
 
 import com.cbwleft.elasticsearch.entity.Movie;
-import com.cbwleft.elasticsearch.jsoup.MovieDetailParser;
-import io.searchbox.annotations.JestId;
+import com.cbwleft.elasticsearch.crawler.MovieDetailParser;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Index;
@@ -10,6 +9,7 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import io.searchbox.indices.CreateIndex;
 import io.searchbox.indices.DeleteIndex;
+import io.searchbox.indices.mapping.PutMapping;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -41,20 +42,34 @@ public class JestTest {
 
     @Test
     public void testCreateIndex() throws IOException {
-        JestResult jestResult = client.execute(new CreateIndex.Builder("articles").build());
+        CreateIndex createIndex = new CreateIndex.Builder("articles").build();
+        JestResult jestResult = client.execute(createIndex);
         log.info("testCreateIndex返回结果{}", jestResult.getJsonString());
         Assert.assertNotNull(jestResult);
     }
 
     @Test
+    public void testMapping() throws IOException {
+        testCreateIndex();
+        PutMapping putMapping = new PutMapping.Builder(
+                "articles",
+                "tweet",
+                "{ \"tweet\" : { \"properties\" : { \"date\" : {\"type\" : \"date\", \"store\" : \"yes\"} } } }"
+        ).build();
+        JestResult jestResult = client.execute(putMapping);
+        log.info("testMapping返回结果{}", jestResult.getJsonString());
+        Assert.assertTrue(jestResult.isSucceeded());
+    }
+
+    @Test
     public void testIndex() throws IOException {
-        Article source = Article.builder().author("cbwleft").content("learning elasticsearch is a long trip").build();
+        Article source = Article.builder().author("cbwleft").content("learning elasticsearch is a long trip").date(new Date()).build();
         Index index = new Index.Builder(source).index("articles").type("tweet").build();
         JestResult jestResult = client.execute(index);
         log.info("testIndex返回结果{}", jestResult.getJsonString());
         Assert.assertTrue(jestResult.isSucceeded());
 
-        source = Article.builder().author("elastic").content("elastic权威指南").id("1").build();
+        source = Article.builder().author("elastic").content("elastic权威指南").id("1").date(new Date()).build();
         index = new Index.Builder(source).index("articles").type("tweet").build();
         jestResult = client.execute(index);
         log.info("testIndex返回结果{}", jestResult.getJsonString());
@@ -85,7 +100,7 @@ public class JestTest {
 
     @Test
     public void testMovie() throws IOException {
-        Movie movie = movieDetail.parse("99111");
+        Movie movie = movieDetail.parse("99763");
         Index index = new Index.Builder(movie).index("movie").type("dy2018").build();
         JestResult jestResult = client.execute(index);
         Assert.assertTrue(jestResult.isSucceeded());

@@ -1,4 +1,4 @@
-package com.cbwleft.elasticsearch.jsoup;
+package com.cbwleft.elasticsearch.crawler;
 
 import com.cbwleft.elasticsearch.entity.Movie;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,6 @@ public class MovieDetailParser {
     public Movie parse(String id) throws IOException {
         URL url = new URL(MessageFormat.format(URL_PATTERN, id));
         Document document = Jsoup.parse(url, 10000);
-        document.charset(Charset.forName("gb2312"));
         Movie movie = new Movie();
         movie.setId(id);
         String title = document.select(".title_all h1").text();
@@ -80,7 +79,7 @@ public class MovieDetailParser {
             } else if (text.startsWith("◎简　　介")) {
                 String description = p.nextElementSibling().text();
                 log.debug("简介:{}", description);
-                movie.setDescription(description.trim());
+                movie.setDescription(description.substring(2));
             }
         });
         List<String> downloadUrl = new ArrayList<>();
