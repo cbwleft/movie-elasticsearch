@@ -3,6 +3,7 @@ package com.cbwleft.elasticsearch.entity;
 import io.searchbox.annotations.JestId;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Movie {
 
     private String title;//标题
 
-    private int year;//年代
+    private Integer year;//年代
 
     private String origin;//产地
 
@@ -28,9 +29,9 @@ public class Movie {
 
     private String releaseDate;//上映日期
 
-    private float score;//豆瓣评分
+    private Float score;//豆瓣评分
 
-    private int duration;//片长
+    private Integer duration;//片长
 
     private String director;//导演
 
@@ -41,5 +42,7 @@ public class Movie {
     private List<String> downloadUrl;//下载地址
 
     private Date updateDate;//更新时间
+
+    private LocalDate updateDay;//更新日期
 
 }

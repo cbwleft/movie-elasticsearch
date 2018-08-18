@@ -9,9 +9,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,12 +38,16 @@ public class MovieDetailParser {
         try {
             movie.setScore(Float.parseFloat(score));
         } catch (NumberFormatException e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
         String updateDate = document.select("span.updatetime").text();
         log.debug("发布日期:{}", updateDate);
         try {
-            movie.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").parse(updateDate.replace("发布时间：", "")));
+            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            updateDate = updateDate.replace("发布时间：", "");
+            movie.setUpdateDate(sdf.parse(updateDate));
+            movie.setUpdateDay(LocalDate.parse(updateDate, dtf));
         } catch (ParseException e) {
             log.error("发布日期{}解析出错", updateDate);
         }
@@ -87,9 +94,8 @@ public class MovieDetailParser {
                     movie.setDescription(description.substring(2));
                 }
             } catch (RuntimeException e) {
-                log.info(e.getMessage());
+                log.error(e.getMessage());
             }
-
         });
         List<String> downloadUrl = new ArrayList<>();
         movie.setDownloadUrl(downloadUrl);

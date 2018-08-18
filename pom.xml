@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.cbwleft</groupId>
-    <artifactId>elasticsearch</artifactId>
+    <artifactId>movie-elasticsearch</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>elasticsearch</name>
-    <description>Demo project for Spring Boot with elasticsearch</description>
+    <name>movie-elasticsearch</name>
+    <description>Demo project for Spring Boot with ElasticSearch</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -23,7 +23,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <jest.version>5.3.3</jest.version>
-        <elasticsearch.versioin>6.2.4</elasticsearch.versioin>
         <jsoup.version>1.11.3</jsoup.version>
     </properties>
 
@@ -38,7 +37,6 @@
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
-            <version>${elasticsearch.version}</version>
         </dependency>
 
         <dependency>

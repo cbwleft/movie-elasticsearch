@@ -25,8 +25,8 @@ public class MovieDetailParserTest {
         Movie movie = movieDetail.parse("99860");
         log.info("电影详情:{}", movie);
         Assert.assertEquals(movie.getName(), "Skyscraper");
-        Assert.assertEquals(movie.getDuration(), 102);
-        Assert.assertEquals(movie.getYear(), 2018);
+        Assert.assertTrue(movie.getDuration() == 102);
+        Assert.assertTrue(movie.getYear() == 2018);
         Assert.assertEquals(movie.getOrigin(), "美国");
         Assert.assertNotNull(movie.getDescription());
         Assert.assertEquals(movie.getActor().size(), 23);

@@ -28,6 +28,7 @@ public class MovieListParser {
     private Set<String> movieIds = new HashSet<>();
 
     public void parse(String url) throws IOException {
+        log.info("抓取列表页面:{}", url);
         Document document = Jsoup.parse(new URL(url), 10000);
         document.select(".co_content8 a").forEach(a -> {
             String href = a.attr("href");
