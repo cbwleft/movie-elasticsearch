@@ -24,6 +24,7 @@
         <java.version>1.8</java.version>
         <jest.version>5.3.3</jest.version>
         <elasticsearch.versioin>6.2.4</elasticsearch.versioin>
+        <jsoup.version>1.11.3</jsoup.version>
     </properties>
 
     <dependencies>
@@ -38,6 +39,12 @@
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
             <version>${elasticsearch.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
 
         <dependency>

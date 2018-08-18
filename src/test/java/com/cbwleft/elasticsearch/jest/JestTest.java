@@ -1,5 +1,8 @@
 package com.cbwleft.elasticsearch.jest;
 
+import com.cbwleft.elasticsearch.entity.Movie;
+import com.cbwleft.elasticsearch.jsoup.MovieDetailParser;
+import io.searchbox.annotations.JestId;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Index;
@@ -75,6 +78,17 @@ public class JestTest {
         log.info("testSearch返回{}", hits.size());
         hits.forEach(hit -> log.info("{}", hit.source));
         Assert.assertNotNull(hits);
+    }
+
+    @Autowired
+    private MovieDetailParser movieDetail;
+
+    @Test
+    public void testMovie() throws IOException {
+        Movie movie = movieDetail.parse("99111");
+        Index index = new Index.Builder(movie).index("movie").type("dy2018").build();
+        JestResult jestResult = client.execute(index);
+        Assert.assertTrue(jestResult.isSucceeded());
     }
 
 }
