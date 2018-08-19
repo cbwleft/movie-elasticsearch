@@ -5,13 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <title>movie-elasticsearch</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
-<body>
-    <h1>
+<body class="container">
+    <h3>
         ${movie.name!""}
         <#if movie.translatedName??><#list movie.translatedName as tn>/${tn}</#list></#if>
         <#if movie.year??>(${movie.year})</#if>
-    </h1>
+    </h3>
     <#if movie.director??>
     <p>导演：${movie.director}</p>
     </#if>
@@ -38,7 +39,7 @@
     </#if>
     <#if movie.downloadUrl??>
     <section>
-        <h2>下载地址:</h2>
+        <h4>下载地址:</h4>
         <#list movie.downloadUrl as du>
         <p><a href="${du}">${du}</a></p>
         </#list>
