@@ -6,12 +6,17 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <title>movie-elasticsearch</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/common.css">
     <style>
         em{
             color: orangered;
         }
         form{
             max-width: 280px;
+        }
+        .img-thumbnail{
+            width: 160px;
+            height: 220px;
         }
     </style>
 </head>
