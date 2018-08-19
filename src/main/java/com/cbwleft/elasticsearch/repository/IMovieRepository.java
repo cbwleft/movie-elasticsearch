@@ -9,4 +9,6 @@ public interface IMovieRepository {
     boolean save(Movie movie);
 
     List<Movie> query(String queryString, int pageNo, int size);
+
+    Movie get(String id);
 }

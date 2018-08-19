@@ -38,7 +38,7 @@ public class MovieDetailParser {
         try {
             movie.setScore(Float.parseFloat(score));
         } catch (NumberFormatException e) {
-            log.error(e.getMessage());
+            log.info(e.getMessage());
         }
         String updateDate = document.select("span.updatetime").text();
         log.debug("发布日期:{}", updateDate);
@@ -49,7 +49,7 @@ public class MovieDetailParser {
             movie.setUpdateDate(sdf.parse(updateDate));
             movie.setUpdateDay(LocalDate.parse(updateDate, dtf));
         } catch (ParseException e) {
-            log.error("发布日期{}解析出错", updateDate);
+            log.info("发布日期{}解析出错", updateDate);
         }
         Elements zoom = document.select("#Zoom");
         String coverUrl = zoom.select("p").get(0).select("img").attr("src");
@@ -94,7 +94,7 @@ public class MovieDetailParser {
                     movie.setDescription(description.substring(2));
                 }
             } catch (RuntimeException e) {
-                log.error(e.getMessage());
+                log.info(e.getMessage());
             }
         });
         List<String> downloadUrl = new ArrayList<>();

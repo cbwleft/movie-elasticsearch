@@ -4,6 +4,7 @@ import com.cbwleft.elasticsearch.entity.Movie;
 import com.cbwleft.elasticsearch.repository.IMovieRepository;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +57,7 @@ public class MovieESRepository implements IMovieRepository {
                 .field("director", 5)
                 .field("actor", 3)
                 .field("description");
-        searchSourceBuilder.query(queryStringQueryBuilder);
+        searchSourceBuilder.query(queryStringQueryBuilder).from(pageNo).size(size);
         log.info("搜索DSL:{}", searchSourceBuilder.toString());
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 .addIndex(INDEX)
@@ -71,12 +73,29 @@ public class MovieESRepository implements IMovieRepository {
                 if (highlight.containsKey("name")) {
                     movie.setName(highlight.get("name").get(0));
                 }
+                if (highlight.containsKey("translatedName")) {
+                    movie.setTranslatedName(highlight.get("translatedName"));
+                }
                 movies.add(movie);
             });
             return movies;
         } catch (IOException e) {
-            return null;
+            log.error("search异常", e);
+            return Collections.emptyList();
         }
 
+    }
+
+    @Override
+    public Movie get(String id) {
+        Get get = new Get.Builder(INDEX, id).type(TYPE).build();
+        try {
+            JestResult result = client.execute(get);
+            Movie movie = result.getSourceAsObject(Movie.class);
+            return movie;
+        } catch (IOException e) {
+            log.error("get异常", e);
+            return null;
+        }
     }
 }

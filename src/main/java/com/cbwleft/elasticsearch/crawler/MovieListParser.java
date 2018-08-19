@@ -25,8 +25,6 @@ public class MovieListParser {
     @Autowired
     private IMovieRepository movieRepository;
 
-    private Set<String> movieIds = new HashSet<>();
-
     public void parse(String url) throws IOException {
         log.info("抓取列表页面:{}", url);
         Document document = Jsoup.parse(new URL(url), 10000);
@@ -34,16 +32,12 @@ public class MovieListParser {
             String href = a.attr("href");
             if (href.matches("/i/[0-9]+.html")) {
                 String id = href.substring(3, href.lastIndexOf("."));
-                if (movieIds.add(id)) {
-                    log.info("开始抓取电影id:{}", id);
-                    try {
-                        Movie movie = movieDetailParser.parse(id);
-                        movieRepository.save(movie);
-                    } catch (IOException e) {
-                        log.error("抓取电影id:{}异常", e);
-                    }
-                } else {
-                    log.debug("电影id:{}已被采集，不再重复采集", id);
+                log.info("开始抓取电影id:{}", id);
+                try {
+                    Movie movie = movieDetailParser.parse(id);
+                    movieRepository.save(movie);
+                } catch (IOException e) {
+                    log.error("抓取电影id:{}异常", e);
                 }
             }
         });
@@ -51,7 +45,7 @@ public class MovieListParser {
             String text = a.text();
             if (text.equals("下一页")) {
                 try {
-                    parse(a.absUrl("href"));
+                    parse(a.absUrl("href"));//recursion
                 } catch (IOException e) {
                     log.error("抓取下一页异常:{}", e);
                 }
