@@ -17,7 +17,7 @@ public class MovieListParserTest {
     @Autowired
     private MovieListParser movieListParser;
 
-    @Test
+    //@Test
     public void testParse() throws IOException {
         movieListParser.parse(MovieListParser.START_PAGE);
     }
