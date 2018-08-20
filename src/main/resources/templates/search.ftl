@@ -7,22 +7,20 @@
     <title>movie-elasticsearch</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/common.css">
+    <script type="text/javascript" src="/js/common.js"></script>
     <style>
         em{
             color: orangered;
         }
         form{
             max-width: 280px;
-        }
-        .img-thumbnail{
-            width: 160px;
-            height: 220px;
+            max-width: calc(100% - 100px);
         }
     </style>
 </head>
 <body class="container">
     <header>
-        <h2><a href="/">Movie ElasticSearch</a></h2>
+        <h1><a href="/">Movie ElasticSearch</a></h1>
         <form action="/s" class="input-group">
             <input name="wd" class="form-control" value="${RequestParameters['wd']}">
             <div class="input-group-btn">
@@ -41,7 +39,7 @@
                 </p>
                 <p><img
                         src="${movie.coverUrl!''}"
-                        class="lazyload img-thumbnail"
+                        class="img-thumbnail"
                         onerror="notFound()"
                     >
                 </p>
@@ -51,11 +49,4 @@
     </section>
 
 </body>
-<script>
-    function notFound(){
-        var img=event.srcElement;
-        img.src="https://img3.doubanio.com/f/movie/03d3c900d2a79a15dc1295154d5293a2d5ebd792/pics/movie/tv_default_large.png";
-        img.onerror=null;
-    }
-</script>
 </html>

@@ -7,6 +7,7 @@
     <title>movie-elasticsearch</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/common.css">
+    <script type="text/javascript" src="/js/common.js"></script>
 </head>
 <body class="container">
     <h3>
@@ -14,6 +15,9 @@
         <#if movie.translatedName??><#list movie.translatedName as tn>/${tn}</#list></#if>
         <#if movie.year??>(${movie.year})</#if>
     </h3>
+    <#if movie.coverUrl??>
+    <p><img src="${movie.coverUrl!}" class="img-thumbnail" onerror="notFound()"></p>
+    </#if>
     <#if movie.director??>
     <p>导演：${movie.director}</p>
     </#if>

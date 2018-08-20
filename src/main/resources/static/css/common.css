@@ -2,3 +2,8 @@ body.container{
     max-width: 640px;
     position: relative;
 }
+
+.img-thumbnail{
+    width: 160px;
+    height: 220px;
+}
