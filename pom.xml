@@ -89,23 +89,24 @@
                 <configuration>
                     <from>
                         <!--base image-->
-                        <image>openjdk:alpine</image>
+                        <image>registry.cn-hangzhou.aliyuncs.com/cbwleft/openjdk:alpine</image>
                     </from>
                     <to>
                         <!--目标镜像registry地址，为了方便测试，你需要换成自己的地址，如果你的网络不好，可以选用国内加速器，比如阿里云的-->
                         <image>registry.cn-hangzhou.aliyuncs.com/cbwleft/movie-elasticsearch</image>
                     </to>
                 </configuration>
-                <executions>
+                <!--<executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
                     </execution>
-                </executions>
+                </executions>-->
             </plugin>
         </plugins>
+        <finalName>movie-elasticsearch</finalName>
     </build>
 
 

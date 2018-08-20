@@ -1,6 +1,7 @@
 package com.cbwleft.elasticsearch.repository.impl;
 
 import com.cbwleft.elasticsearch.entity.Movie;
+import com.cbwleft.elasticsearch.entity.Page;
 import com.cbwleft.elasticsearch.repository.IMovieRepository;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +46,7 @@ public class MovieESRepository implements IMovieRepository {
     }
 
     @Override
-    public List<Movie> query(String queryString, int pageNo, int size) {
+    public Page<Movie> query(String queryString, int pageNo, int size) {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         HighlightBuilder highlightBuilder = new HighlightBuilder().field("*").requireFieldMatch(false).tagsSchema("default");
         searchSourceBuilder.highlighter(highlightBuilder);
@@ -57,7 +57,8 @@ public class MovieESRepository implements IMovieRepository {
                 .field("director", 5)
                 .field("actor", 3)
                 .field("description");
-        searchSourceBuilder.query(queryStringQueryBuilder).from(pageNo).size(size);
+        int from = (pageNo - 1) * size < 0 ? 0 : (pageNo - 1) * size;
+        searchSourceBuilder.query(queryStringQueryBuilder).from(from).size(size);
         log.info("搜索DSL:{}", searchSourceBuilder.toString());
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 .addIndex(INDEX)
@@ -78,10 +79,12 @@ public class MovieESRepository implements IMovieRepository {
                 }
                 movies.add(movie);
             });
-            return movies;
+            int took = result.getJsonObject().get("took").getAsInt();
+            Page<Movie> page = Page.<Movie>builder().list(movies).pageNo(pageNo).size(size).total(result.getTotal()).took(took).build();
+            return page;
         } catch (IOException e) {
             log.error("search异常", e);
-            return Collections.emptyList();
+            return null;
         }
 
     }

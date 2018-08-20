@@ -1,6 +1,7 @@
 package com.cbwleft.elasticsearch.web;
 
 import com.cbwleft.elasticsearch.entity.Movie;
+import com.cbwleft.elasticsearch.entity.Page;
 import com.cbwleft.elasticsearch.repository.IMovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,11 +27,12 @@ public class SearchController {
     @RequestMapping("/s")
     public String search(
             @RequestParam("wd") String queryString,
-            @RequestParam(value = "pn", required = false, defaultValue = "0") int pageNo,
+            @RequestParam(value = "pn", required = false, defaultValue = "1") int pageNo,
             Model model
     ) {
-        List<Movie> list = movieRepository.query(queryString, pageNo, 10);
-        model.addAttribute("list", list);
+        Page<Movie> page = movieRepository.query(queryString, pageNo, 10);
+        model.addAttribute("page", page);
+        model.addAttribute("wd", queryString);
         return "search";
     }
 

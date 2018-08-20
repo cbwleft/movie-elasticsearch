@@ -1,6 +1,7 @@
 package com.cbwleft.elasticsearch.repository;
 
 import com.cbwleft.elasticsearch.entity.Movie;
+import com.cbwleft.elasticsearch.entity.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,8 +22,8 @@ public class IMovieRepositoryTest {
 
     @Test
     public void query() {
-        List<Movie> list = movieRepository.query("爆裂无声",1, 10);
-        log.info(list.toString());
-        Assert.assertNotNull(list);
+        Page<Movie> page = movieRepository.query("爆裂无声",1, 10);
+        log.info(page.toString());
+        Assert.assertNotNull(page);
     }
 }
