@@ -20,11 +20,11 @@
             </div>
         </form>
         <p>热搜关键词：
-            <a href="/s?wd=复仇者联盟">复仇者联盟</a>
-            <a href="/s?wd=死侍2">死侍2</a>
-            <a href="/s?wd=寂静之地">寂静之地</a>
-            <a href="/s?wd=银翼杀手">银翼杀手</a>
-            <a href="/s?wd=头号玩家">头号玩家</a>
+            <a href="/s?wd=%E5%A4%8D%E4%BB%87%E8%80%85%E8%81%94%E7%9B%9F">复仇者联盟</a>
+            <a href="/s?wd=%E6%AD%BB%E4%BE%8D2">死侍2</a>
+            <a href="/s?wd=%E5%AF%82%E9%9D%99%E4%B9%8B%E5%9C%B0">寂静之地</a>
+            <a href="/s?wd=%E9%93%B6%E7%BF%BC%E6%9D%80%E6%89%8B">银翼杀手</a>
+            <a href="/s?wd=%E5%A4%B4%E5%8F%B7%E7%8E%A9%E5%AE%B6">头号玩家</a>
         </p>
     </section>
 </body>
