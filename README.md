@@ -13,8 +13,8 @@
 ### 为何要写这个demo
 在学习ElasticSearch的过程中，发现ElasticSearch的java客户端多达十余种，使用两种不同的通讯协议，而且2.X和5.X版本差异较大。<br>
 这种现象对于初学者来说不是非常友好，本来spring-data-elasticsearch应该是首要选择，但是我发现SpringBoot官方文档中首先推荐使用的是Jest，
-而不是自家的data-elasticsearch。<br>
-深入使用后发现，data-elasticsearch是基于TransportClient,而这个基于java序列化机制(9300端口)的，ElasticSearch官方准备废弃该客户端。
+其次才是自家的spring-data-elasticsearch。<br>
+深入使用后发现，spring-data-elasticsearch基于TransportClient，这个客户端使用java序列化机制(9300端口)通讯，ElasticSearch官方准备废弃该客户端。
 应该使用REST客户端(9200端口)代替。这就让Jest成了该项目的首选。
 
 ### 参考资料

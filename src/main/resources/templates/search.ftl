@@ -23,13 +23,14 @@
     <header>
         <h1><a href="/">Movie ElasticSearch</a></h1>
         <form action="/s" class="input-group">
-            <input name="wd" class="form-control" value="${wd}">
+            <input name="wd" class="form-control" value='${wd}'>
             <div class="input-group-btn">
                 <button type="submit" class="btn btn-primary">搜索</button>
             </div>
         </form>
         <a target="_blank" href="https://github.com/cbwleft"><img style="position: absolute; top: 0; right: 0; border: 0" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
     </header>
+    <#if page??>
     <section>
         <p>共找到相关结果${page.total}个，耗时${page.took}ms</p>
     </section>
@@ -62,6 +63,7 @@
             </li>
         </ul>
     </nav>
+    </#if>
 </body>
 <script>
     window.addEventListener("load", function(event) {
