@@ -59,7 +59,7 @@ public class MovieESRepository implements IMovieRepository {
                 .field("description");
         int from = (pageNo - 1) * size < 0 ? 0 : (pageNo - 1) * size;
         searchSourceBuilder.query(queryStringQueryBuilder).from(from).size(size);
-        log.info("搜索DSL:{}", searchSourceBuilder.toString());
+        log.debug("搜索DSL:{}", searchSourceBuilder.toString());
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 .addIndex(INDEX)
                 .addType(TYPE)

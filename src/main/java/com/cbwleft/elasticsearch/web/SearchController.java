@@ -3,6 +3,7 @@ package com.cbwleft.elasticsearch.web;
 import com.cbwleft.elasticsearch.entity.Movie;
 import com.cbwleft.elasticsearch.entity.Page;
 import com.cbwleft.elasticsearch.repository.IMovieRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
+@Slf4j
 public class SearchController {
 
     @Autowired
@@ -30,6 +32,7 @@ public class SearchController {
             @RequestParam(value = "pn", required = false, defaultValue = "1") int pageNo,
             Model model
     ) {
+        log.info("搜索参数wd:{},pn:{}", queryString, pageNo);
         Page<Movie> page = movieRepository.query(queryString, pageNo, 10);
         model.addAttribute("page", page);
         model.addAttribute("wd", queryString);

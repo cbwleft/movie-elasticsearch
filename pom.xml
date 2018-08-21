@@ -89,8 +89,8 @@
                 <version>0.9.9</version>
                 <configuration>
                     <from>
-                        <!--base image-->
-                        <image>registry.cn-hangzhou.aliyuncs.com/cbwleft/openjdk:alpine</image>
+                        <!--base image 修复时区问题-->
+                        <image>registry.cn-hangzhou.aliyuncs.com/java-jdk/openjdk:8</image>
                     </from>
                     <to>
                         <!--目标镜像registry地址，为了方便测试，你需要换成自己的地址，如果你的网络不好，可以选用国内加速器，比如阿里云的-->
