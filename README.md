@@ -4,11 +4,15 @@
 [试一下](http://47.98.111.179)<br>
 
 ### 本地部署
-* 启动ElasticSearch(我选择的是5.6.10版本)<br>
-* 修改application.properties中的spring.elasticsearch.jest.uris参数<br>
-* 启动SpringBoot项目<br>
-* 访问<localhost:8080/crawl>开启爬虫<br>
+* 启动ElasticSearch(我选择的是5.6.10版本)
+* 修改application.properties中的spring.elasticsearch.jest.uris参数
+* 启动SpringBoot项目
+* 访问<localhost:8080/crawl>开启爬虫
 * 访问<localhost:8080>开始搜索
+
+### Docker运行
+* （可选，docker运行ElasticSearch）docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9200:9200 elasticsearch
+* docker run -e spring.elasticsearch.jest.uris="http://ip:9200" -p 8080:8080 registry.cn-hangzhou.aliyuncs.com/cbwleft/movie-elasticsearch
 
 ### 为何要写这个demo
 在学习ElasticSearch的过程中，发现ElasticSearch的java客户端多达十余种，使用两种不同的通讯协议，而且2.X和5.X版本差异较大。<br>
@@ -20,3 +24,4 @@
 ### 参考资料
 * SpringBoot官方文档ElasticSearch部分 <https://docs.spring.io/spring-boot/docs/2.0.4.RELEASE/reference/htmlsingle/#boot-features-elasticsearch>
 * ElasticSearch TransportClient <https://www.elastic.co/guide/en/elasticsearch/client/java-api/5.6/java-api.html>
+* Jest官方文档 <https://github.com/searchbox-io/Jest/tree/master/jest>

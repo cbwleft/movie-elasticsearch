@@ -85,7 +85,8 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>0.9.8</version>
+                <!-- 0.9.8存在无法认证的bug -->
+                <version>0.9.9</version>
                 <configuration>
                     <from>
                         <!--base image-->
@@ -96,14 +97,14 @@
                         <image>registry.cn-hangzhou.aliyuncs.com/cbwleft/movie-elasticsearch</image>
                     </to>
                 </configuration>
-                <!--<executions>
+                <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
                     </execution>
-                </executions>-->
+                </executions>
             </plugin>
         </plugins>
         <finalName>movie-elasticsearch</finalName>
