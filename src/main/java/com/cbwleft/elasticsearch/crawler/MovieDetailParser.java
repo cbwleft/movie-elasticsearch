@@ -18,6 +18,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+
+import static com.cbwleft.elasticsearch.crawler.MovieListParser.userAgentList;
 
 @Component
 @Slf4j
@@ -26,8 +29,9 @@ public class MovieDetailParser {
     public static final String URL_PATTERN = "https://www.dy2018.com/i/{0}.html";
 
     public Movie parse(String id) throws IOException {
-        URL url = new URL(MessageFormat.format(URL_PATTERN, id));
-        Document document = Jsoup.parse(url, 10000);
+        String userAgent = userAgentList[new Random().nextInt(userAgentList.length)];
+        String url = MessageFormat.format(URL_PATTERN, id);
+        Document document = Jsoup.connect(url).userAgent(userAgent).timeout(10000).get();
         Movie movie = new Movie();
         movie.setId(id);
         String title = document.select(".title_all h1").text();
