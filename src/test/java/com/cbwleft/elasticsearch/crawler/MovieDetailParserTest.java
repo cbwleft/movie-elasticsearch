@@ -21,7 +21,7 @@ public class MovieDetailParserTest {
     private MovieDetailParser movieDetail;
 
     @Test
-    public void parse() throws IOException {
+    public void testParse() throws IOException {
         Movie movie = movieDetail.parse("99860");
         log.info("电影详情:{}", movie);
         Assert.assertEquals(movie.getName(), "Skyscraper");

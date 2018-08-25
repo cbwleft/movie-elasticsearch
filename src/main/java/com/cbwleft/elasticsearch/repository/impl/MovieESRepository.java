@@ -2,6 +2,7 @@ package com.cbwleft.elasticsearch.repository.impl;
 
 import com.cbwleft.elasticsearch.entity.Movie;
 import com.cbwleft.elasticsearch.entity.Page;
+import com.cbwleft.elasticsearch.entity.QueryDTO;
 import com.cbwleft.elasticsearch.repository.IMovieRepository;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
@@ -10,9 +11,15 @@ import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -57,8 +64,7 @@ public class MovieESRepository implements IMovieRepository {
                 .field("director", 5)
                 .field("actor", 3)
                 .field("description");
-        int from = (pageNo - 1) * size < 0 ? 0 : (pageNo - 1) * size;
-        searchSourceBuilder.query(queryStringQueryBuilder).from(from).size(size);
+        searchSourceBuilder.query(queryStringQueryBuilder).from(from(pageNo, size)).size(size);
         log.debug("搜索DSL:{}", searchSourceBuilder.toString());
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 .addIndex(INDEX)
@@ -90,6 +96,36 @@ public class MovieESRepository implements IMovieRepository {
     }
 
     @Override
+    public Page<Movie> query(QueryDTO queryDTO, int pageNo, int size) {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder().from(from(pageNo, size)).size(size);
+        if (queryDTO.getMinScore() != null) {
+            BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+            RangeQueryBuilder rangeQueryBuilder = new RangeQueryBuilder("score").gte(queryDTO.getMinScore());
+            boolQueryBuilder.must(rangeQueryBuilder);
+            searchSourceBuilder.query(boolQueryBuilder);
+        }
+        if (queryDTO.getOrderBy() != null) {
+            searchSourceBuilder.sort(queryDTO.getOrderBy(), SortOrder.DESC);
+        }
+        log.debug("搜索DSL:{}", searchSourceBuilder.toString());
+        Search search = new Search.Builder(searchSourceBuilder.toString())
+                .addIndex(INDEX)
+                .addType(TYPE)
+                .build();
+        try {
+            SearchResult result = client.execute(search);
+            List<Movie> movies = result.getSourceAsObjectList(Movie.class, false);
+            int took = result.getJsonObject().get("took").getAsInt();
+            Page<Movie> page = Page.<Movie>builder().list(movies).pageNo(pageNo).size(size).total(result.getTotal()).took(took).build();
+            return page;
+        } catch (IOException e) {
+            log.error("search异常", e);
+            return null;
+        }
+
+    }
+
+    @Override
     public Movie get(String id) {
         Get get = new Get.Builder(INDEX, id).type(TYPE).build();
         try {
@@ -100,5 +136,9 @@ public class MovieESRepository implements IMovieRepository {
             log.error("get异常", e);
             return null;
         }
+    }
+
+    private int from(int pageNo, int size) {
+        return (pageNo - 1) * size < 0 ? 0 : (pageNo - 1) * size;
     }
 }
