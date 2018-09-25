@@ -1,7 +1,7 @@
 # movie-elasticsearch
 ### 简介
 使用SpringBoot2.0+ElasticSearch+Jest实现的电影搜索网站<br>
-[试一下](http://47.98.111.179)<br>
+[试一下](http://s.cbwleft.top)<br>
 
 ### 本地部署
 * 启动ElasticSearch(我选择的是5.6.10版本)
