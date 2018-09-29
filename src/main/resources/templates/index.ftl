@@ -10,7 +10,7 @@
 </head>
 <body class="container">
     <header>
-        <h1 class="center-block">Movie ElasticSearch</h1>
+        <h1>Movie ElasticSearch</h1>
     </header>
     <section>
         <form action="/s" class="input-group">
@@ -19,7 +19,7 @@
                 <button type="submit" class="btn btn-primary">搜索</button>
             </div>
         </form>
-        <p>豆瓣高分：
+        <p>豆瓣7.0：
             <#list recommendWord as word>
             <a href="/s?wd=${word?url('utf-8')}">${word}</a>
             </#list>

@@ -26,7 +26,7 @@ public class SearchController {
 
     @GetMapping("/")
     public String index(Model model) {
-        QueryDTO queryDTO = QueryDTO.builder().minScore(7.5f).orderBy("updateDate").build();
+        QueryDTO queryDTO = QueryDTO.builder().minScore(7.0f).orderBy("updateDate").build();
         Page<Movie> page = movieRepository.query(queryDTO, 1, 6);
         List<String> recommendWord = new ArrayList<>();
         if (page != null) {
