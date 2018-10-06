@@ -56,12 +56,16 @@ public class MovieDetailParser {
             log.info("发布日期{}解析出错", updateDate);
         }
         Elements zoom = document.select("#Zoom");
-        String coverUrl = zoom.select("p").get(0).select("img").attr("src");
-        log.debug("封面图片:{}", coverUrl);
-        movie.setCoverUrl(coverUrl);
+        try {
+            String coverUrl = zoom.select("p, div").get(0).select("img").attr("src");
+            log.debug("封面图片:{}", coverUrl);
+            movie.setCoverUrl(coverUrl);
+        } catch (Exception e) {
+            log.info("封面图片解析出错");
+        }
         List<String> actor = new ArrayList<>();
         movie.setActor(actor);
-        zoom.select("p").forEach(p -> {
+        zoom.select("p, div").forEach(p -> {
             String text = p.text();
             try {
                 if (text.startsWith("◎译　　名")) {

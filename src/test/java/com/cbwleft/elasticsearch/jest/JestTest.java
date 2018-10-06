@@ -100,7 +100,7 @@ public class JestTest {
 
     @Test
     public void testMovie() throws IOException {
-        Movie movie = movieDetail.parse("99763");
+        Movie movie = movieDetail.parse("100061");
         Index index = new Index.Builder(movie).index("movie").type("dy2018").build();
         JestResult jestResult = client.execute(index);
         Assert.assertTrue(jestResult.isSucceeded());
