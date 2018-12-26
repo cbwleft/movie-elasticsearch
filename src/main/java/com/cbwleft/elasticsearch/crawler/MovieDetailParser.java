@@ -4,11 +4,11 @@ import com.cbwleft.elasticsearch.entity.Movie;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.cbwleft.elasticsearch.crawler.MovieListParser.userAgentList;
+import static java.util.stream.Collectors.toList;
 
 @Component
 @Slf4j
@@ -105,13 +106,8 @@ public class MovieDetailParser {
                 log.info(e.getMessage());
             }
         });
-        List<String> downloadUrl = new ArrayList<>();
+        List<String> downloadUrl = zoom.select("table a").stream().map(Element::text).collect(toList());
         movie.setDownloadUrl(downloadUrl);
-        zoom.select("table a").forEach(a -> {
-            String text = a.text();
-            log.debug("下载地址:{}", text);
-            downloadUrl.add(text);
-        });
         return movie;
     }
 

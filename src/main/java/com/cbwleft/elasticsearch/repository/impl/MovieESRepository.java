@@ -12,21 +12,19 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 @Repository
 @Slf4j
@@ -59,7 +57,7 @@ public class MovieESRepository implements IMovieRepository {
         searchSourceBuilder.highlighter(highlightBuilder);
         QueryStringQueryBuilder queryStringQueryBuilder = new QueryStringQueryBuilder(queryString);
         queryStringQueryBuilder
-                .field("name",10)
+                .field("name", 10)
                 .field("translatedName", 8)
                 .field("director", 5)
                 .field("actor", 3)
@@ -73,8 +71,7 @@ public class MovieESRepository implements IMovieRepository {
         try {
             SearchResult result = client.execute(search);
             List<SearchResult.Hit<Movie, Void>> hits = result.getHits(Movie.class);
-            List<Movie> movies = new ArrayList<>();
-            hits.forEach(hit -> {
+            List<Movie> movies = hits.stream().map(hit -> {
                 Movie movie = hit.source;
                 Map<String, List<String>> highlight = hit.highlight;
                 if (highlight.containsKey("name")) {
@@ -83,8 +80,8 @@ public class MovieESRepository implements IMovieRepository {
                 if (highlight.containsKey("translatedName")) {
                     movie.setTranslatedName(highlight.get("translatedName"));
                 }
-                movies.add(movie);
-            });
+                return movie;
+            }).collect(toList());
             int took = result.getJsonObject().get("took").getAsInt();
             Page<Movie> page = Page.<Movie>builder().list(movies).pageNo(pageNo).size(size).total(result.getTotal()).took(took).build();
             return page;

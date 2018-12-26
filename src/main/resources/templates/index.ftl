@@ -19,7 +19,7 @@
                 <button type="submit" class="btn btn-primary">搜索</button>
             </div>
         </form>
-        <p>豆瓣7.0：
+        <p>豆瓣7.5：
             <#list recommendWord as word>
             <a href="/s?wd=${word?url('utf-8')}">${word}</a>
             </#list>

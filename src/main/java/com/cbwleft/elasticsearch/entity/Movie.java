@@ -2,6 +2,7 @@ package com.cbwleft.elasticsearch.entity;
 
 import io.searchbox.annotations.JestId;
 import lombok.Data;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -44,5 +45,14 @@ public class Movie {
     private Date updateDate;//更新时间
 
     private LocalDate updateDay;//更新日期
+
+    public String getRecommendWord() {
+        String word = getName();
+        String title = getTitle();
+        if (!StringUtils.isEmpty(title) && title.contains("《") && title.contains("》")) {
+            word = title.substring(title.indexOf('《') + 1, title.indexOf('》'));
+        }
+        return word;
+    }
 
 }
