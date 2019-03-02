@@ -10,10 +10,10 @@
 * 访问 <localhost:8080/crawl> 开启爬虫
 * 访问 <localhost:8080> 开始搜索
 
-### Docker 运行（需要自行安装 ElasticSearch）
+### Docker 运行（需要先行安装 ElasticSearch）
 docker run -e spring.elasticsearch.jest.uris="http://elasticsearch:9200" -p 8080:8080 cbwleft/movie-elasticsearch
 
-### Docker compose 运行（包含 ElasticSearch）
+### Docker Compose 运行（包含 ElasticSearch）
 进入项目根目录运行：docker-compose up
 
 ### 为何要写这个 demo
