@@ -1,0 +1,34 @@
+version: '3.5'
+
+services:
+  movie:
+    image: cbwleft/movie-elasticsearch
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      - spring.elasticsearch.jest.uris=http://elasticsearch:9200
+    container_name: movie
+
+  elasticsearch:
+    image: elasticsearch:6.4.3
+    ports:
+      - "9200:9200"
+    restart: always
+    environment:
+      - ES_JAVA_OPTS=-Xms256m -Xmx256m
+      - discovery.type=single-node
+    container_name: elasticsearch
+
+  kibana:
+    image: kibana:6.4.3
+    depends_on:
+      - elasticsearch
+    restart: always
+    ports:
+      - "5601:5601"
+    container_name: kibana
+
+networks:
+  default:
+    name: movie
