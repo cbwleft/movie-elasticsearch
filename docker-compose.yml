@@ -16,8 +16,10 @@ services:
       - "9200:9200"
     restart: always
     environment:
-      - ES_JAVA_OPTS=-Xms256m -Xmx256m
+      - ES_JAVA_OPTS=-Xms256m -Xmx256m -XX:-UseConcMarkSweepGC -XX:+UseG1GC
       - discovery.type=single-node
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
     container_name: elasticsearch
 
   kibana:
@@ -32,3 +34,7 @@ services:
 networks:
   default:
     name: movie
+
+volumes:
+  esdata:
+    driver: local
