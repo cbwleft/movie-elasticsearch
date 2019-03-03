@@ -8,27 +8,31 @@ services:
     restart: always
     environment:
       - spring.elasticsearch.jest.uris=http://elasticsearch:9200
+      - TZ=Asia/Shanghai
     container_name: movie
 
   elasticsearch:
-    image: elasticsearch:6.4.3
+    image: elasticsearch:6.6.1
     ports:
       - "9200:9200"
     restart: always
     environment:
       - ES_JAVA_OPTS=-Xms256m -Xmx256m -XX:-UseConcMarkSweepGC -XX:+UseG1GC
       - discovery.type=single-node
+      - TZ=Asia/Shanghai
     volumes:
       - esdata:/usr/share/elasticsearch/data
     container_name: elasticsearch
 
   kibana:
-    image: kibana:6.4.3
+    image: kibana:6.6.1
     depends_on:
       - elasticsearch
     restart: always
     ports:
       - "5601:5601"
+    environment:
+      - TZ=Asia/Shanghai
     container_name: kibana
 
 networks:

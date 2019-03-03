@@ -4,7 +4,7 @@
 [试一下](http://s.cbwleft.top)<br>
 
 ### 本地部署
-* 启动 ElasticSearch(我选择的是 6.4.3 版本)
+* 启动 ElasticSearch 6.X+
 * 修改 application.properties 中的 spring.elasticsearch.jest.uris 参数
 * 启动 SpringBoot 项目
 * 访问 <localhost:8080/crawl> 开启爬虫
@@ -25,6 +25,6 @@ docker run -e spring.elasticsearch.jest.uris="http://elasticsearch:9200" -p 8080
 
 ### 参考资料
 * [SpringBoot 官方文档 ElasticSearch 部分](https://docs.spring.io/spring-boot/docs/2.1.3.RELEASE/reference/htmlsingle/#boot-features-elasticsearch)
-* [ElasticSearch TransportClient](https://www.elastic.co/guide/en/elasticsearch/client/java-api/6.4/java-api.html)
+* [ElasticSearch TransportClient](https://www.elastic.co/guide/en/elasticsearch/client/java-api/current/java-api.html)
 * [Jest 官方文档](https://github.com/searchbox-io/Jest/tree/master/jest)
 * [个人整理的 ElasticSearch 学习思维导图](http://naotu.baidu.com/file/3b7f1dec1a487abf6ffe51f1a950744b?token=e08546f6ca1fa320)
