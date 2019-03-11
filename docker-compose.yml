@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   movie:
-    image: cbwleft/movie-elasticsearch
+    image: cbwleft/movie-elasticsearch:5
     ports:
       - "8080:8080"
     restart: always
@@ -12,7 +12,7 @@ services:
     container_name: movie
 
   elasticsearch:
-    image: elasticsearch:6.6.1
+    image: elasticsearch:5
     ports:
       - "9200:9200"
     restart: always
@@ -21,11 +21,11 @@ services:
       - discovery.type=single-node
       - TZ=Asia/Shanghai
     volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - esdata5:/usr/share/elasticsearch/data
     container_name: elasticsearch
 
   kibana:
-    image: kibana:6.6.1
+    image: kibana:5
     depends_on:
       - elasticsearch
     restart: always
@@ -40,5 +40,5 @@ networks:
     name: movie
 
 volumes:
-  esdata:
+  esdata5:
     driver: local
