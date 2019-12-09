@@ -1,7 +1,6 @@
 # movie-elasticsearch
 ### 简介
 使用 SpringBoot2.0 + ElasticSearch + Jest 实现的电影搜索网站<br>
-[试一下](http://s.cbwleft.top)<br>
 
 ### 本地部署
 * 启动 ElasticSearch 6.X+
